@@ -11,6 +11,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -95,10 +96,22 @@ public class MainApplicationFrame extends JFrame
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Q, ActionEvent.ALT_MASK));
         menuItem.setActionCommand("quit");
-        menuItem.addActionListener((event) -> {System.exit(0);});
+        menuItem.addActionListener((event) -> {exitWindow();});
         menu.add(menuItem);
  
         return menuBar;
+    }
+    
+    protected void exitWindow()
+    { 
+    	Object[] options = { "Да", "Нет" }; 
+    	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", 
+    	"Выход", JOptionPane.DEFAULT_OPTION, 
+    	JOptionPane.WARNING_MESSAGE, null, options, options[0]); 
+    	if (sel == 0) 
+    	{ 
+    	System.exit(0); 
+    	} 
     }
     
     private JMenuBar generateMenuBar()
