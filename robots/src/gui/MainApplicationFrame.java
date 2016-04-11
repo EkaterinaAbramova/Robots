@@ -29,7 +29,8 @@ public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     
-    public MainApplicationFrame() {
+    public MainApplicationFrame() 
+    {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
         int inset = 50;        
@@ -73,7 +74,8 @@ public class MainApplicationFrame extends JFrame
         frame.setVisible(true);
     }
     
-    protected JMenuBar createMenuBar() {
+    protected JMenuBar createMenuBar() 
+    {
         JMenuBar menuBar = new JMenuBar();
  
         //Set up the lone menu.
@@ -124,23 +126,15 @@ public class MainApplicationFrame extends JFrame
                 "Управление режимом отображения приложения");
         
         {
-            JMenuItem systemLookAndFeel = new JMenuItem("Системная схема", KeyEvent.VK_S);
-            systemLookAndFeel.addActionListener((event) -> {
-                setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                this.invalidate();
-            });
+        	JMenuItem systemLookAndFeel = createMenuItem("Системная схема", UIManager.getSystemLookAndFeelClassName());
             lookAndFeelMenu.add(systemLookAndFeel);
         }
 
         {
-            JMenuItem crossplatformLookAndFeel = new JMenuItem("Универсальная схема", KeyEvent.VK_S);
-            crossplatformLookAndFeel.addActionListener((event) -> {
-                setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                this.invalidate();
-            });
+            JMenuItem crossplatformLookAndFeel = createMenuItem("Универсальная схема", UIManager.getCrossPlatformLookAndFeelClassName());
             lookAndFeelMenu.add(crossplatformLookAndFeel);
         }
-
+        
         JMenu testMenu = new JMenu("Тесты");
         testMenu.setMnemonic(KeyEvent.VK_T);
         testMenu.getAccessibleContext().setAccessibleDescription(
@@ -154,9 +148,31 @@ public class MainApplicationFrame extends JFrame
             testMenu.add(addLogMessageItem);
         }
 
+        menuBar.add(createFileMenu());
         menuBar.add(lookAndFeelMenu);
         menuBar.add(testMenu);
         return menuBar;
+    }
+    
+    private JMenu createFileMenu() 
+    {
+    	JMenu fileMenu = new JMenu("File");
+    	fileMenu.setMnemonic(KeyEvent.VK_F);
+    	fileMenu.getAccessibleContext().setAccessibleDescription("Общие команды");
+    	JMenuItem exitMenuItem = new JMenuItem("Выйти", KeyEvent.VK_X);
+    	exitMenuItem.addActionListener((event) -> {
+    	});
+    	fileMenu.add(exitMenuItem);
+    	return fileMenu;
+    }
+    private JMenuItem createMenuItem(String text, String className)
+    {
+    	JMenuItem systemLookAndFeel = new JMenuItem(text, KeyEvent.VK_S);
+    	systemLookAndFeel.addActionListener((event) -> {
+    		setLookAndFeel(className);
+    		this.invalidate();
+    		});
+    	return systemLookAndFeel;
     }
     
     private void setLookAndFeel(String className)
