@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -79,12 +82,12 @@ public class MainApplicationFrame extends JFrame
         JMenuBar menuBar = new JMenuBar();
  
         //Set up the lone menu.
-        JMenu menu = new JMenu("Document");
+        JMenu menu = new JMenu("Документ");
         menu.setMnemonic(KeyEvent.VK_D);
         menuBar.add(menu);
  
         //Set up the first menu item.
-        JMenuItem menuItem = new JMenuItem("New");
+        JMenuItem menuItem = new JMenuItem("Новый");
         menuItem.setMnemonic(KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, ActionEvent.ALT_MASK));
@@ -93,7 +96,7 @@ public class MainApplicationFrame extends JFrame
         menu.add(menuItem);
  
         //Set up the second menu item.
-        menuItem = new JMenuItem("Quit");
+        menuItem = new JMenuItem("Выход");
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Q, ActionEvent.ALT_MASK));
@@ -110,10 +113,25 @@ public class MainApplicationFrame extends JFrame
     	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", 
     	"Выход", JOptionPane.DEFAULT_OPTION, 
     	JOptionPane.WARNING_MESSAGE, null, options, options[0]); 
-    	if (sel == 0) 
+    	if (sel == JOptionPane.YES_OPTION) 
     	{ 
     	System.exit(0); 
     	} 
+    }
+    
+	protected void writeInFile(String s)
+    {
+    	File f = new File(System.getProperty("user.home"), "location.txt");
+    	DataOutputStream locations;
+    	try
+    	{
+    		locations = new DataOutputStream(new FileOutputStream(f));
+    		locations.writeChars(s);
+    	}
+    	catch(Exception e)
+    	{
+    		System.exit(0);
+    	}
     }
     
     private JMenuBar generateMenuBar()
@@ -156,7 +174,7 @@ public class MainApplicationFrame extends JFrame
     
     private JMenu createFileMenu() 
     {
-    	JMenu fileMenu = new JMenu("File");
+    	JMenu fileMenu = new JMenu("Файл");
     	fileMenu.setMnemonic(KeyEvent.VK_F);
     	fileMenu.getAccessibleContext().setAccessibleDescription("Общие команды");
     	JMenuItem exitMenuItem = new JMenuItem("Выйти", KeyEvent.VK_X);
