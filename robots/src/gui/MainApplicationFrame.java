@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +33,7 @@ import log.Logger;
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
+    private ExitAction exitAction();
     
     public MainApplicationFrame() 
     {
@@ -101,22 +104,23 @@ public class MainApplicationFrame extends JFrame
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Q, ActionEvent.ALT_MASK));
         menuItem.setActionCommand("quit");
-        menuItem.addActionListener((event) -> {exitWindow();});
+        menuItem.addActionListener((event) -> {Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));});
         menu.add(menuItem);
- 
+        addWindowListener(new WindowAdapter()
+        {
+        	public void exitWindow(WindowEvent e)
+        	{
+        		Object[] options = {"Да", "Нет"};
+        		int sel = JOptionPane.showOptionDialog(null, "Вы действительно хотите выйти?",
+        	    "Выйти?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        	    if (sel == JOptionPane.YES_OPTION)
+        	    {
+        	    	System.exit(0);
+        	    }
+        	}
+        });
+        
         return menuBar;
-    }
-    
-    protected void exitWindow()
-    { 
-    	Object[] options = { "Да", "Нет" }; 
-    	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", 
-    	"Выход", JOptionPane.DEFAULT_OPTION, 
-    	JOptionPane.WARNING_MESSAGE, null, options, options[0]); 
-    	if (sel == JOptionPane.YES_OPTION) 
-    	{ 
-    	System.exit(0); 
-    	} 
     }
     
 	protected void writeInFile(String s)
