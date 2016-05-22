@@ -33,7 +33,6 @@ import log.Logger;
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    private ExitAction exitAction();
     
     public MainApplicationFrame() 
     {
@@ -54,8 +53,13 @@ public class MainApplicationFrame extends JFrame
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
         addWindow(gameWindow);
+        
+        Coordinates coordinatesWin = new Coordinates();
+        coordinatesWin.setSize(200, 100);
+        addWindow(coordinatesWin);
 
         setJMenuBar(generateMenuBar());
+        setJMenuBar(createMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         JMenuBar menuBar = generateMenuBar();
@@ -108,7 +112,7 @@ public class MainApplicationFrame extends JFrame
         menu.add(menuItem);
         addWindowListener(new WindowAdapter()
         {
-        	public void exitWindow(WindowEvent e)
+        	public void windowClosing(WindowEvent e)
         	{
         		Object[] options = {"Да", "Нет"};
         		int sel = JOptionPane.showOptionDialog(null, "Вы действительно хотите выйти?",
