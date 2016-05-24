@@ -32,7 +32,8 @@ import log.Logger;
  */
 public class MainApplicationFrame extends JFrame
 {
-    private final JDesktopPane desktopPane = new JDesktopPane();
+    protected static final String DISPOSE_ON_EXIT = null;
+	private final JDesktopPane desktopPane = new JDesktopPane();
     
     public MainApplicationFrame() 
     {
@@ -59,8 +60,7 @@ public class MainApplicationFrame extends JFrame
         addWindow(coordinatesWin);
 
         setJMenuBar(generateMenuBar());
-        setJMenuBar(createMenuBar());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
         JMenuBar menuBar = generateMenuBar();
     	menuBar.add(createMenuBar());
@@ -119,8 +119,9 @@ public class MainApplicationFrame extends JFrame
         	    "Выйти?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         	    if (sel == JOptionPane.YES_OPTION)
         	    {
-        	    	System.exit(0);
+        	    	dispose();
         	    }
+        	   
         	}
         });
         
