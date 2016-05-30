@@ -34,6 +34,9 @@ public class MainApplicationFrame extends JFrame
 {
     protected static final String DISPOSE_ON_EXIT = null;
 	private final JDesktopPane desktopPane = new JDesktopPane();
+	protected LogWindow logWind;
+	protected GameWindow gameWind;
+	protected Coordinates coordWind;
     
     public MainApplicationFrame() 
     {
@@ -50,14 +53,17 @@ public class MainApplicationFrame extends JFrame
         
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
+        logWind = logWindow;
 
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
         addWindow(gameWindow);
+        gameWind = gameWindow;
         
         Coordinates coordinatesWin = new Coordinates();
         coordinatesWin.setSize(200, 100);
         addWindow(coordinatesWin);
+        coordWind = coordinatesWin;
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -65,6 +71,27 @@ public class MainApplicationFrame extends JFrame
         JMenuBar menuBar = generateMenuBar();
     	menuBar.add(createMenuBar());
     	setJMenuBar(menuBar);
+    }
+    
+    protected void serialisation(LogWindow logW, GameWindow gameW, Coordinates coordW)
+    {
+    	logW.getLocation();
+    	gameW.getLocation();
+    	coordW.getLocation();
+    	String logWPos = logW.getX() + " " 
+    			+ logW.getY() + " " 
+    			+ logW.getWidth() + " " 
+    			+ logW.getHeight();
+    	String gameWPos = gameW.getX() + " " 
+    			+ gameW.getY() + " " 
+    			+ gameW.getWidth() + " " 
+    			+gameW.getHeight();
+    	String coordsWPos = coordW.getX()+ " " 
+    			+ coordW.getY() + " " 
+    			+ coordW.getWidth() + " " 
+    			+ coordW.getHeight();
+    	String pos = logWPos + " " + gameWPos + " " + coordsWPos;
+    	writeInFile(pos);
     }
     
     protected LogWindow createLogWindow()
@@ -119,9 +146,9 @@ public class MainApplicationFrame extends JFrame
         	    "Выйти?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         	    if (sel == JOptionPane.YES_OPTION)
         	    {
+        	    	serialisation(logWind, gameWind, coordWind);
         	    	dispose();
         	    }
-        	   
         	}
         });
         
@@ -139,7 +166,7 @@ public class MainApplicationFrame extends JFrame
     	}
     	catch(Exception e)
     	{
-    		System.exit(0);
+    		dispose();
     	}
     }
     
