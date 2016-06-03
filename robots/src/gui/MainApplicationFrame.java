@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -90,7 +88,7 @@ public class MainApplicationFrame extends JFrame
     			+ coordW.getY() + " " 
     			+ coordW.getWidth() + " " 
     			+ coordW.getHeight();
-    	String pos = logWPos + " " + gameWPos + " " + coordsWPos;
+    	String pos = logWPos + "\r\n" + gameWPos + "\r\n" + coordsWPos;
     	writeInFile(pos);
     }
     
@@ -158,11 +156,11 @@ public class MainApplicationFrame extends JFrame
 	protected void writeInFile(String s)
     {
     	File f = new File(System.getProperty("user.home"), "location.txt");
-    	DataOutputStream locations;
-    	try
+    	
+    	try(FileWriter writer = new FileWriter(f))
     	{
-    		locations = new DataOutputStream(new FileOutputStream(f));
-    		locations.writeChars(s);
+    		writer.write(s);
+    		writer.flush();
     	}
     	catch(Exception e)
     	{
